@@ -10,10 +10,9 @@ USER www-user
 
 RUN git clone https://github.com/sstephenson/rbenv.git ~www-user/.rbenv
 RUN git clone https://github.com/sstephenson/ruby-build ~www-user/.rbenv/plugins/ruby-build
-RUN git clone https://github.com/ianheggie/rbenv-binstubs.git ~www-user/.rbenv/plugins/rbenv-binstubs
+#RUN git clone https://github.com/ianheggie/rbenv-binstubs.git ~www-user/.rbenv/plugins/rbenv-binstubs
 
-ENV PATH /home/www-user/.rbenv/bin:$PATH
-
+ENV PATH /home/www-user/.rbenv/shims:/home/www-user/.rbenv/bin:$PATH
 RUN eval "$(rbenv init -)"
 
 RUN rbenv install 2.3.0
@@ -26,6 +25,7 @@ RUN gem install bundler && rbenv rehash
 
 RUN echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~www-user/.bashrc
 RUN echo 'eval "$(rbenv init -)"' >> ~www-user/.bashrc
+RUN echo 'gem: --no-rdoc --no-ri' >> ~www-user/.gemrc
 
 EXPOSE 80 22 443
 
