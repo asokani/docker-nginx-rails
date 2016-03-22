@@ -1,4 +1,4 @@
-FROM mainlxc/apache-php
+FROM mainlxc/base
 MAINTAINER Asokani "https://github.com/asokani"
 
 RUN add-apt-repository -y ppa:chris-lea/nginx-devel
@@ -6,14 +6,26 @@ RUN add-apt-repository -y ppa:chris-lea/nginx-devel
 RUN apt-get update && \
   apt-get -y install nginx-full libreadline-dev libffi-dev
 
-RUN sudo -H -u www-user git clone https://github.com/rbenv/rbenv.git /home/www-user/.rbenv && \
-	sudo -H -u www-user git clone https://github.com/rbenv/ruby-build.git /home/www-user/.rbenv/plugins/ruby-build
-RUN sudo -H -u www-user bash -c 'export PATH=/home/www-user/.rbenv/bin:$PATH;rbenv install 2.3.0'
-RUN sudo -H -u www-user bash -c 'export PATH=/home/www-user/.rbenv/bin:$PATH;rbenv install 2.2.3'
-RUN sudo -H -u www-user bash -c 'export PATH=/home/www-user/.rbenv/bin:$PATH;rbenv install 2.2.0'
-RUN sudo -H -u www-user bash -c 'export PATH=/home/www-user/.rbenv/bin:$PATH;rbenv install 1.9.3-p551'
-RUN sudo -H -u www-user bash -c 'export PATH=/home/www-user/.rbenv/bin:$PATH;rbenv global 2.3.0'
-RUN sudo -H -u www-user bash -c 'export PATH=/home/www-user/.rbenv/bin:$PATH;eval "$(rbenv init -)";gem install bundler;rbenv rehash;bundle install;rbenv rehash'
+USER www-user
+
+RUN git clone https://github.com/sstephenson/rbenv.git ~www-user/.rbenv
+RUN git clone https://github.com/sstephenson/ruby-build ~www-user/.rbenv/plugins/ruby-build
+RUN git clone https://github.com/ianheggie/rbenv-binstubs.git ~www-user/.rbenv/plugins/rbenv-binstubs
+
+ENV PATH /home/www-user/.rbenv/bin:$PATH
+
+RUN eval "$(rbenv init -)"
+
+RUN rbenv install 2.3.0
+#RUN rbenv install 2.2.3
+#RUN rbenv install 2.2.0
+#RUN rbenv install 1.9.3-p551
+RUN rbenv global 2.3.0
+
+RUN gem install bundler && rbenv rehash 
+
+RUN echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~www-user/.bashrc
+RUN echo 'eval "$(rbenv init -)"' >> ~www-user/.bashrc
 
 EXPOSE 80 22 443
 
