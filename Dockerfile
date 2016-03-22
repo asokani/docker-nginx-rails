@@ -6,13 +6,13 @@ RUN add-apt-repository -y ppa:chris-lea/nginx-devel
 RUN apt-get update && \
   apt-get -y install nginx-full libreadline-dev libffi-dev
 
-USER www-user
 
-RUN git clone https://github.com/sstephenson/rbenv.git ~www-user/.rbenv
-RUN git clone https://github.com/sstephenson/ruby-build ~www-user/.rbenv/plugins/ruby-build
-#RUN git clone https://github.com/ianheggie/rbenv-binstubs.git ~www-user/.rbenv/plugins/rbenv-binstubs
+RUN git clone https://github.com/sstephenson/rbenv.git /usr/local/rbenv
+RUN git clone https://github.com/sstephenson/ruby-build /usr/local/rbenv/plugins/ruby-build
+#RUN git clone https://github.com/ianheggie/rbenv-binstubs.git /usr/local/rbenv/plugins/rbenv-binstubs
 
-ENV PATH /home/www-user/.rbenv/shims:/home/www-user/.rbenv/bin:$PATH
+ENV PATH /usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH
+ENV RBENV_ROOT /usr/local/rbenv
 RUN eval "$(rbenv init -)"
 
 RUN rbenv install 2.3.0
@@ -23,9 +23,11 @@ RUN rbenv global 2.3.0
 
 RUN gem install bundler && rbenv rehash 
 
-RUN echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~www-user/.bashrc
-RUN echo 'eval "$(rbenv init -)"' >> ~www-user/.bashrc
-RUN echo 'gem: --no-rdoc --no-ri' >> ~www-user/.gemrc
+RUN chown www-manage:www-user -R /usr/local/rbenv/
+
+RUN echo 'export PATH="/usr/local/rbenv/bin:$PATH"\nexport RBENV_ROOT="/usr/local/rbenv"\neval "$(rbenv init -)"' >> ~www-user/.bashrc
+RUN echo 'export PATH="/usr/local/rbenv/bin:$PATH"\nexport RBENV_ROOT="/usr/local/rbenv"\neval "$(rbenv init -)"' >> ~www-manage/.bashrc
+RUN echo 'gem: --no-rdoc --no-ri' >> ~www-manage/.gemrc
 
 USER root
 
