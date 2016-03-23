@@ -1,5 +1,9 @@
 #!/bin/bash
-set -e
-cd /var/app/current
-exec bundle exec unicorn -c /var/app/current/config/unicorn.rb -E production
 
+PID=`cat /var/run/unicorn.pid`
+if ! kill -s USR2 $PID
+then
+	sv restart unicorn
+else
+	(sleep 10 && kill -s QUIT $PID) &
+fi
