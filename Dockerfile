@@ -35,8 +35,9 @@ USER root
 # nginx
 RUN mkdir /etc/service/nginx
 ADD nginx.sh /etc/service/nginx/run
+ADD nginx-ssl.conf /etc/nginx/ssl.conf
 RUN rm -rf /etc/nginx/conf.d
-RUN sed -i -e  's/http[[:space:]]*{/http {\nserver_names_hash_bucket_size 64;\n/' /etc/nginx/nginx.conf
+RUN sed -i -e  's/http[[:space:]]*{/http {\nserver_names_hash_bucket_size 64;\ninclude \/etc\/nginx\/ssl.conf;/' /etc/nginx/nginx.conf
 
 # unicorn
 RUN mkdir -p /var/log/unicorn && chown www-user:www-user /var/log/unicorn
