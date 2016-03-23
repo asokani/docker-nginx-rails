@@ -39,12 +39,15 @@ RUN rm -rf /etc/nginx/conf.d
 RUN sed -i -e  's/http[[:space:]]*{/http {\nserver_names_hash_bucket_size 64;\n/' /etc/nginx/nginx.conf
 
 # unicorn
-#RUN mkdir /etc/service/unicorn && mkdir /etc/service/unicorn/supervise
-#RUN chmod 755 /etc/service/unicorn/supervise && chown deploy /etc/service/unicorn/supervise
-#RUN mkfifo /etc/service/unicorn/supervise/control //etc/service/unicorn/supervise/ok
-#RUN chmod 600  /etc/service/unicorn/supervise/control /etc/service/unicorn/supervise/ok
-#RUN chown deploy /etc/service/unicorn/supervise/control /etc/service/unicorn/supervise/ok
-#ADD unicorn.sh /etc/service/unicorn/run
+RUN mkdir -p /var/log/unicorn && chown www-user:www-user /var/log/unicorn
+RUN mkdir -p /var/log/rails && touch /var/log/rails/production.log && chown -R www-user:www-user /var/log/rails
+RUN chmod 770 /var/log/rails && chmod 660 /var/log/rails/production.log
+RUN mkdir /etc/service/unicorn && mkdir /etc/service/unicorn/supervise
+RUN chmod 755 /etc/service/unicorn/supervise && chown www-manage /etc/service/unicorn/supervise
+RUN mkfifo /etc/service/unicorn/supervise/control /etc/service/unicorn/supervise/ok
+RUN chmod 600  /etc/service/unicorn/supervise/control /etc/service/unicorn/supervise/ok
+RUN chown www-manage /etc/service/unicorn/supervise/control /etc/service/unicorn/supervise/ok
+ADD unicorn.sh /etc/service/unicorn/run
 
 EXPOSE 80 22 443
 
