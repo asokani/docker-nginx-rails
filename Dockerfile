@@ -23,7 +23,14 @@ RUN rbenv global 2.3.0
 # TODO move to the base, probably PPA nodejs version (this is for uglifier)
 RUN apt-get -y install nodejs
 
-RUN gem install bundler && rbenv rehash 
+ENV RBENV_VERSION 1.9.3-p551
+RUN gem install bundler
+ENV RBENV_VERSION 2.2.0
+RUN gem install bundler
+ENV RBENV_VERSION 2.3.0
+RUN gem install bundler
+
+RUN rbenv rehash 
 
 RUN chown www-manage:www-user -R /usr/local/rbenv/ && chmod -R g+rX /usr/local/rbenv/ && find /usr/local/rbenv -type d -exec chmod g+s {} \;
 RUN echo 'export PATH="/usr/local/rbenv/bin:$PATH"\nexport RBENV_ROOT="/usr/local/rbenv"\neval "$(rbenv init -)"' >> ~www-user/.bashrc
@@ -47,6 +54,9 @@ RUN mkdir /etc/service/unicorn
 ADD unicorn.sh /etc/service/unicorn/run
 ADD unicorn-reload.sh /usr/bin/unicorn-reload.sh
 RUN echo "www-manage ALL = NOPASSWD: /usr/bin/unicorn-reload.sh" > /etc/sudoers.d/unicorn
+
+# for specific programs
+RUN apt-get -y install pdf2htmlex
 
 EXPOSE 80 22 443
 
