@@ -15,9 +15,9 @@ ENV RBENV_ROOT /usr/local/rbenv
 RUN eval "$(rbenv init -)"
 
 RUN rbenv install 2.3.0
-#RUN rbenv install 2.2.3
-#RUN rbenv install 2.2.0
-#RUN rbenv install 1.9.3-p551
+RUN rbenv install 2.2.3
+RUN rbenv install 2.2.0
+RUN rbenv install 1.9.3-p551
 RUN rbenv global 2.3.0
 
 # TODO move to the base, probably PPA nodejs version (this is for uglifier)
