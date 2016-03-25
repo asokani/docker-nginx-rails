@@ -57,6 +57,7 @@ RUN echo "www-manage ALL = NOPASSWD: /usr/bin/unicorn-reload.sh" > /etc/sudoers.
 
 # for specific programs
 RUN apt-get -y install pdf2htmlex
+RUN echo "test"
 
 EXPOSE 80 22 443
 
