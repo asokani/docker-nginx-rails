@@ -15,18 +15,15 @@ ENV RBENV_ROOT /usr/local/rbenv
 RUN eval "$(rbenv init -)"
 
 RUN rbenv install 2.3.0
-RUN rbenv install 2.2.3
-RUN rbenv install 2.2.0
+#RUN rbenv install 2.2.3
+#RUN rbenv install 2.2.0
 RUN rbenv install 1.9.3-p551
 RUN rbenv global 2.3.0
 
-# TODO move to the base, probably PPA nodejs version (this is for uglifier)
-RUN apt-get -y install nodejs
-
 ENV RBENV_VERSION 1.9.3-p551
 RUN gem install bundler
-ENV RBENV_VERSION 2.2.0
-RUN gem install bundler
+#ENV RBENV_VERSION 2.2.0
+#RUN gem install bundler
 ENV RBENV_VERSION 2.3.0
 RUN gem install bundler
 
@@ -57,7 +54,7 @@ RUN echo "www-manage ALL = NOPASSWD: /usr/bin/unicorn-reload.sh" > /etc/sudoers.
 
 # for specific programs
 # RUN apt-get -y install pdf2htmlex
-RUN echo "test"
+# TODO letsencrypt reload nginx config
 
 EXPOSE 80 22 443
 
