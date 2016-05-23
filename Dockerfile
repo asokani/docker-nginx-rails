@@ -4,7 +4,7 @@ MAINTAINER Asokani "https://github.com/asokani"
 RUN add-apt-repository -y ppa:chris-lea/nginx-devel
 
 RUN apt-get update && \
-  apt-get -y install nginx-full libreadline-dev libffi-dev
+   apt-get -y install nginx-full libreadline-dev libffi-dev
 
 RUN git clone https://github.com/sstephenson/rbenv.git /usr/local/rbenv
 RUN git clone https://github.com/sstephenson/ruby-build /usr/local/rbenv/plugins/ruby-build
