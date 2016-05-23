@@ -15,18 +15,18 @@ ENV RBENV_ROOT /usr/local/rbenv
 RUN eval "$(rbenv init -)"
 
 RUN rbenv install 2.3.0
-#TODO RUN rbenv install 2.2.3
-#TODO RUN rbenv install 2.2.0
-#TODO RUN rbenv install 1.9.3-p551
+RUN rbenv install 2.2.3
+RUN rbenv install 2.2.0
+RUN rbenv install 1.9.3-p551
 RUN rbenv global 2.3.0
 
 # TODO move to the base, probably PPA nodejs version (this is for uglifier)
 RUN apt-get -y install nodejs
 
-#ENV RBENV_VERSION 1.9.3-p551
-#RUN gem install bundler
-#ENV RBENV_VERSION 2.2.0
-#RUN gem install bundler
+ENV RBENV_VERSION 1.9.3-p551
+RUN gem install bundler
+ENV RBENV_VERSION 2.2.0
+RUN gem install bundler
 ENV RBENV_VERSION 2.3.0
 RUN gem install bundler
 
@@ -45,6 +45,7 @@ ADD nginx.sh /etc/service/nginx/run
 ADD nginx-ssl.conf /etc/nginx/ssl.conf
 RUN rm -rf /etc/nginx/conf.d
 RUN sed -i -e  's/http[[:space:]]*{/http {\nserver_names_hash_bucket_size 64;\ninclude \/etc\/nginx\/ssl.conf;/' /etc/nginx/nginx.conf
+RUN echo "sv restart nginx" >> /etc/cron.monthly/letsencrypt.sh
 
 # unicorn
 RUN mkdir -p /var/log/unicorn && chown www-user:www-user /var/log/unicorn
@@ -58,7 +59,6 @@ RUN echo "www-manage ALL = NOPASSWD: /usr/bin/unicorn-reload.sh" > /etc/sudoers.
 # custom init
 RUN rm -f /etc/service/sshd/down
 # ADD rails.sh /etc/my_init.d/rails.sh
-
 
 # for specific programs
 # RUN apt-get -y install pdf2htmlex
