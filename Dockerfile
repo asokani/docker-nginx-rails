@@ -58,7 +58,6 @@ RUN echo "www-manage ALL = NOPASSWD: /usr/bin/unicorn-reload.sh" > /etc/sudoers.
 
 # custom init
 RUN rm -f /etc/service/sshd/down
-# ADD rails.sh /etc/my_init.d/rails.sh
 
 # for specific programs
 # RUN apt-get -y install pdf2htmlex
