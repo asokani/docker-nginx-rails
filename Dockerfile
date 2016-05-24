@@ -44,7 +44,7 @@ RUN mkdir /etc/service/nginx
 ADD nginx.sh /etc/service/nginx/run
 ADD nginx-ssl.conf /etc/nginx/ssl.conf
 RUN rm -rf /etc/nginx/conf.d
-RUN sed -i -e  's/http[[:space:]]*{/http {\nserver_names_hash_bucket_size 64;\ninclude \/etc\/nginx\/ssl.conf;/' /etc/nginx/nginx.conf
+RUN sed -i -e  's/http[[:space:]]*{/http {\nserver_names_hash_bucket_size 128;\ninclude \/etc\/nginx\/ssl.conf;/' /etc/nginx/nginx.conf
 RUN echo "sv restart nginx" >> /etc/cron.monthly/letsencrypt.sh
 
 # unicorn
