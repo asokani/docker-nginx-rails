@@ -60,7 +60,10 @@ RUN echo "www-manage ALL = NOPASSWD: /usr/bin/unicorn-reload.sh" > /etc/sudoers.
 RUN rm -f /etc/service/sshd/down
 
 # for specific programs
-RUN apt-get -y install graphicsmagick
+RUN apt-get -y install graphicsmagick python-setuptools \
+        python-dev build-essential
+RUN easy_install xlsx2csv
+
 
 EXPOSE 80 22 443
 
