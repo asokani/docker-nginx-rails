@@ -15,18 +15,8 @@ ENV RBENV_ROOT /usr/local/rbenv
 RUN eval "$(rbenv init -)"
 
 RUN rbenv install 2.3.0
-RUN rbenv install 2.2.3
-RUN rbenv install 2.2.0
-RUN rbenv install 1.9.3-p551
 RUN rbenv global 2.3.0
 
-# TODO move to the base, probably PPA nodejs version (this is for uglifier)
-RUN apt-get -y install nodejs
-
-ENV RBENV_VERSION 1.9.3-p551
-RUN gem install bundler
-ENV RBENV_VERSION 2.2.0
-RUN gem install bundler
 ENV RBENV_VERSION 2.3.0
 RUN gem install bundler
 
@@ -59,7 +49,6 @@ RUN echo "www-manage ALL = NOPASSWD: /usr/bin/unicorn-reload.sh" > /etc/sudoers.
 # custom init
 RUN rm -f /etc/service/sshd/down
 
-# for specific programs
 RUN apt-get -y install graphicsmagick python-setuptools \
         python-dev build-essential
 RUN easy_install xlsx2csv
