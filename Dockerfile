@@ -36,7 +36,7 @@ ADD nginx-ssl.conf /etc/nginx/ssl.conf
 RUN rm -rf /etc/nginx/conf.d
 RUN sed -i -e 's/user www-data;/user www-user;/' /etc/nginx/nginx.conf
 RUN sed -i -e 's/http[[:space:]]*{/http {\nserver_names_hash_bucket_size 128;\ninclude \/etc\/nginx\/ssl.conf;/' /etc/nginx/nginx.conf
-RUN echo "sv restart nginx" >> /etc/cron.monthly/letsencrypt.sh
+RUN echo "sv restart nginx" >> /etc/cron.weekly/letsencrypt.sh
 
 # unicorn
 RUN mkdir -p /var/log/unicorn && chown www-user:www-user /var/log/unicorn
