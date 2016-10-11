@@ -64,7 +64,7 @@ trap graceful_shutdown INT TERM
 
 echo "Waiting for current master to die. PID: ($CUR_PID)"
 while [ -n "$(is_unicorn_alive $CUR_PID)" ]; do
-    /bin/echo -n '.'
+    # /bin/echo -n '.'
     sleep 2
 done
 echo "You've killed a unicorn!"
