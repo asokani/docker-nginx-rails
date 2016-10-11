@@ -30,8 +30,9 @@ RUN echo 'gem: --no-rdoc --no-ri' >> ~www-manage/.gemrc
 USER root
 
 # nginx
-RUN mkdir /etc/service/nginx
-ADD nginx.sh /etc/service/nginx/run
+RUN mkdir /etc/sv/nginx
+RUN ln -s /etc/sv/nginx /etc/service/
+ADD nginx.sh /etc/sv/nginx/run
 ADD nginx-ssl.conf /etc/nginx/ssl.conf
 RUN rm -rf /etc/nginx/conf.d
 RUN sed -i -e 's/user www-data;/user www-user;/' /etc/nginx/nginx.conf
@@ -42,8 +43,12 @@ RUN echo "sv restart nginx" >> /etc/cron.weekly/letsencrypt.sh
 RUN mkdir -p /var/log/unicorn && chown www-user:www-user /var/log/unicorn
 RUN mkdir -p /var/log/rails && touch /var/log/rails/production.log && chown -R www-user:www-user /var/log/rails
 RUN chmod 770 /var/log/rails && chmod 660 /var/log/rails/production.log
-RUN mkdir /etc/service/unicorn
-ADD unicorn.sh /etc/service/unicorn/run
+RUN mkdir /etc/sv/unicorn
+RUN mkdir /etc/sv/unicorn/log
+RUN mkdir /var/log/unicorn-run && chown www-user:www-user /var/log/unicorn-run
+RUN ln -s /etc/sv/unicorn /etc/service/
+ADD unicorn.sh /etc/sv/unicorn/run
+ADD unicorn-log.sh /etc/sv/unicorn/log/run
 ADD unicorn-reload.sh /usr/bin/unicorn-reload.sh
 RUN echo "www-manage ALL = NOPASSWD: /usr/bin/unicorn-reload.sh" > /etc/sudoers.d/unicorn
 
