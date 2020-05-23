@@ -18,7 +18,7 @@ RUN rbenv install 2.3.0
 RUN rbenv global 2.3.0
 
 ENV RBENV_VERSION 2.3.0
-RUN gem install bundler
+RUN gem install bundler -v 1.13.6
 
 RUN rbenv rehash 
 
